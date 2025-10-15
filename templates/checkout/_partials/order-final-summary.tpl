@@ -56,7 +56,7 @@
     </div>
   </div>
 
-  {if !$cart.is_virtual}
+  {if !$cart.is_virtual && !$multishipment_is_enabled}
     <div class="row">
       <div class="col-md-12">
         <h4 class="h4">
