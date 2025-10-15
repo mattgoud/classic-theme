@@ -33,11 +33,13 @@
 
     {block name='order_confirmation_table'}
       {foreach from=$selected_carriers item=carrier key=carrierId}
+        <div class="carrier-info">
+          <span><b>Delivery option</b>: {$carrier.name}</span>
+          <p>{$carrier.delay}</p>
+        </div>
         {foreach from=$products item=product}
           {if in_array($carrierId, $product.carriers)}
             <div class="order-line row m-1">
-            <span><b>Delivery option</b>: {$carrier.name}</span>
-            <p>{$carrier.delay}</p>
             <div class="col-sm-2 col-xs-3">
               <span class="image">
                 {if !empty($product.default_image)}
