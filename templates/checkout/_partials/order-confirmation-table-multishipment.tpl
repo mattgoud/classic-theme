@@ -25,7 +25,7 @@
 <div id="order-items" class="col-md-12">
   <div class="row">
     {block name='order_items_table_head'}
-      <h3 class="card-title h3 col-md-6 col-12">{$products|count} {l s='order items' d='Shop.Theme.Checkout'}</h3>
+      <h3 class="card-title h3 col-md-6 col-12">{$products_count} {l s='order items' d='Shop.Theme.Checkout'}</h3>
     {/block}
   </div>
 
