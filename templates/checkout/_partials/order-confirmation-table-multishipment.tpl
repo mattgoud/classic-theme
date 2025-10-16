@@ -30,23 +30,21 @@
   </div>
 
   <div class="order-confirmation-table">
-
     {block name='order_confirmation_table'}
-      {foreach from=$selected_carriers item=carrier key=carrierId}
-        <div class="carrier-info">
-          <span><b>Delivery option</b>: {$carrier.name}</span>
-          <p>{$carrier.delay}</p>
-        </div>
-        {foreach from=$products item=product}
-          {if in_array($carrierId, $product.carriers)}
+      {foreach from=$products item=product}
+          <div class="carrier-info">
+            <span><b>Delivery option</b>: {$product.carrier.name}</span>
+            <p>{$product.carrier.delay}</p>
+          </div>
+          {foreach from=$product['products'] item=productDetail}
             <div class="order-line row m-1">
             <div class="col-sm-2 col-xs-3">
               <span class="image">
-                {if !empty($product.default_image)}
+                {if !empty($productDetail.default_image)}
                   <picture>
-                    {if !empty($product.default_image.medium.sources.avif)}<source srcset="{$product.default_image.medium.sources.avif}" type="image/avif">{/if}
-                    {if !empty($product.default_image.medium.sources.webp)}<source srcset="{$product.default_image.medium.sources.webp}" type="image/webp">{/if}
-                    <img src="{$product.default_image.medium.url}" loading="lazy" />
+                    {if !empty($productDetail.default_image.medium.sources.avif)}<source srcset="{$productDetail.default_image.medium.sources.avif}" type="image/avif">{/if}
+                    {if !empty($productDetail.default_image.medium.sources.webp)}<source srcset="{$productDetail.default_image.medium.sources.webp}" type="image/webp">{/if}
+                    <img src="{$productDetail.default_image.medium.url}" loading="lazy" />
                   </picture>
                 {else}
                   <picture>
@@ -58,11 +56,11 @@
               </span>
             </div>
             <div class="col-xs-9 details">
-              {if $add_product_link}<a href="{$product.url}" target="_blank">{/if}
-                <span>{$product.name}</span>
+              {if $add_product_link}<a href="{$productDetail.url}" target="_blank">{/if}
+                <span>{$productDetail.name}</span>
               {if $add_product_link}</a>{/if}
-              {if is_array($product.customizations) && $product.customizations|count}
-                {foreach from=$product.customizations item="customization"}
+              {if is_array($productDetail.customizations) && $productDetail.customizations|count}
+                {foreach from=$productDetail.customizations item="customization"}
                   <div class="customizations">
                     <a href="#" data-toggle="modal" data-target="#product-customizations-modal-{$customization.id_customization}">{l s='Product customization' d='Shop.Theme.Catalog'}</a>
                   </div>
@@ -102,17 +100,16 @@
               {/if}
 
               <div class="product-attributes-ref">
-                {foreach from=$product.attributes key=key item=value}
+                {foreach from=$productDetail.attributes key=key item=value}
                   <span>{$key}: {$value} </span>{if !$smarty.foreach.attr.last} *{/if}
                 {/foreach}
-                Reference: {$product.reference}
+                Reference: {$productDetail.reference}
               </div>
-                <div class="bold">{$product.total}</div>
+                <div class="bold">{$productDetail.total}</div>
               {hook h='displayProductPriceBlock' product=$product type="unit_price"}
             </div>
           </div>
-          {/if}
-        {/foreach}
+          {/foreach}
       {/foreach}
 
       <hr>
