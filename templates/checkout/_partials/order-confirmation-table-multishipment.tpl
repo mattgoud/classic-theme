@@ -25,19 +25,19 @@
 <div id="order-items" class="col-md-12">
   <div class="row">
     {block name='order_items_table_head'}
-      <h3 class="card-title h3 col-md-6 col-12">{$products_count} {l s='order items' d='Shop.Theme.Checkout'}</h3>
+      <h3 class="card-title h3 col-md-6 col-12">{l s='Order items' d='Shop.Theme.Checkout'}</h3>
+      <h3 class="card-title h3 col-md-2 text-md-center _desktop-title">{l s='Unit price' d='Shop.Theme.Checkout'}</h3>
+      <h3 class="card-title h3 col-md-2 text-md-center _desktop-title">{l s='Quantity' d='Shop.Theme.Checkout'}</h3>
+      <h3 class="card-title h3 col-md-2 text-md-center _desktop-title">{l s='Total products' d='Shop.Theme.Checkout'}</h3>
     {/block}
   </div>
 
   <div class="order-confirmation-table">
+
     {block name='order_confirmation_table'}
-      {foreach from=$products item=product}
-          <div class="carrier-info">
-            <span><b>Delivery option</b>: {$product.carrier.name}</span>
-            <p>{$product.carrier.delay}</p>
-          </div>
-          {foreach from=$product['products'] item=productDetail}
-            <div class="order-line row m-1">
+      {foreach from=$products item=productCarrier}
+        {foreach from=$productCarrier['products'] item=productDetail}
+          <div class="order-line row">
             <div class="col-sm-2 col-xs-3">
               <span class="image">
                 {if !empty($productDetail.default_image)}
@@ -55,10 +55,13 @@
                 {/if}
               </span>
             </div>
-            <div class="col-xs-9 details">
+            <div class="col-sm-4 col-xs-9 details">
               {if $add_product_link}<a href="{$productDetail.url}" target="_blank">{/if}
                 <span>{$productDetail.name}</span>
               {if $add_product_link}</a>{/if}
+              {if {$productCarrier['carrier'].name}}
+                <div class="carrierName">{l s='Carrier: ' d='Shop.Theme.Checkout'} {$productCarrier['carrier'].name}</div>
+              {/if}
               {if is_array($productDetail.customizations) && $productDetail.customizations|count}
                 {foreach from=$productDetail.customizations item="customization"}
                   <div class="customizations">
@@ -98,18 +101,17 @@
                   </div>
                 {/foreach}
               {/if}
-
-              <div class="product-attributes-ref">
-                {foreach from=$productDetail.attributes key=key item=value}
-                  <span>{$key}: {$value} </span>{if !$smarty.foreach.attr.last} *{/if}
-                {/foreach}
-                Reference: {$productDetail.reference}
+              {hook h='displayProductPriceBlock' product=$productDetail type="unit_price"}
+            </div>
+            <div class="col-sm-6 col-xs-12 qty">
+              <div class="row">
+                <div class="col-xs-4 text-sm-center text-xs-left">{$productDetail.price}</div>
+                <div class="col-xs-4 text-sm-center">{$productDetail.quantity}</div>
+                <div class="col-xs-4 text-sm-center text-xs-right bold">{$productDetail.total}</div>
               </div>
-                <div class="bold">{$productDetail.total}</div>
-              {hook h='displayProductPriceBlock' product=$product type="unit_price"}
             </div>
           </div>
-          {/foreach}
+        {/foreach}
       {/foreach}
 
       <hr>
@@ -134,7 +136,7 @@
             <td>{$totals.total_including_tax.value}</td>
           </tr>
         {else}
-          <tr class="font-weight-bold">
+          <tr class="total-value font-weight-bold">
             <td><span class="text-uppercase">{$totals.total.label}&nbsp;{if $configuration.taxes_enabled && $configuration.display_taxes_label}{$labels.tax_short}{/if}</span></td>
             <td>{$totals.total.value}</td>
           </tr>
