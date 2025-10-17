@@ -97,9 +97,8 @@
     {block name='order_confirmation_table'}
       {if $multishipment_is_enabled}
         {include file='checkout/_partials/order-final-summary-table-multishipment.tpl'
-          products=$cart.products
+          products=$products_carrier_mapping
           products_count=$cart.products_count
-          selected_carriers=$selected_carriers
           subtotals=$cart.subtotals
           totals=$cart.totals
           labels=$cart.labels
