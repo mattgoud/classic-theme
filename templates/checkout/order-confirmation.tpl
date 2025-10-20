@@ -41,16 +41,26 @@
   <section id="content" class="page-content page-order-confirmation card">
     <div class="card-block">
       <div class="row">
-
         {block name='order_confirmation_table'}
-          {include
-            file='checkout/_partials/order-confirmation-table.tpl'
-            products=$order.products
-            subtotals=$order.subtotals
-            totals=$order.totals
-            labels=$order.labels
-            add_product_link=false
-          }
+          {if isset($is_multishipment_enabled) && $is_multishipment_enabled}
+            {include
+              file='checkout/_partials/order-confirmation-table-multishipment.tpl'
+              products=$order.carriers_products
+              subtotals=$order.subtotals
+              totals=$order.totals
+              labels=$order.labels
+              add_product_link=false
+            }
+          {else}
+            {include
+              file='checkout/_partials/order-confirmation-table.tpl'
+              products=$order.products
+              subtotals=$order.subtotals
+              totals=$order.totals
+              labels=$order.labels
+              add_product_link=false
+            }
+          {/if}
         {/block}
 
         {block name='order_details'}
@@ -66,7 +76,7 @@
                 </li>
               {/if}
               {if $order.details.recyclable}
-                <li>  
+                <li>
                   <em>{l s='You have given permission to receive your order in recycled packaging.' d="Shop.Theme.Customeraccount"}</em>
                 </li>
               {/if}
