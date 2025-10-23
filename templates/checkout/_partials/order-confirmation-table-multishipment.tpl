@@ -60,7 +60,7 @@
                 <span>{$productDetail.name}</span>
               {if $add_product_link}</a>{/if}
               {if {$productCarrier['carrier'].name}}
-                <div class="carrierName">{l s='Carrier: ' d='Shop.Theme.Checkout'} {$productCarrier['carrier'].name}</div>
+                <div class="carrier-name">{l s='Carrier: ' d='Shop.Theme.Checkout'} {$productCarrier['carrier'].name}</div>
               {/if}
               {if is_array($productDetail.customizations) && $productDetail.customizations|count}
                 {foreach from=$productDetail.customizations item="customization"}
