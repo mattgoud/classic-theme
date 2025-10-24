@@ -95,7 +95,7 @@
 
   <div class="row">
     {block name='order_confirmation_table'}
-      {if $is_multishipment_enabled}
+      {if isset($is_multishipment_enabled) && $is_multishipment_enabled}
         {include file='checkout/_partials/order-final-summary-table-multishipment.tpl'
           products=$products_carrier_mapping
           products_count=$cart.products_count
