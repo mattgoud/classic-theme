@@ -692,6 +692,12 @@ body#checkout {
     .customizations {
       margin-top: 0.625rem;
     }
+
+    .carrier-name {
+      margin-top: 0.25rem;
+      font-size: 0.875rem;
+      color: $gray;
+    }
   }
 
   .qty {
