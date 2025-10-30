@@ -69,7 +69,7 @@
             <ul>
               <li id="order-reference-value">{l s='Order reference: %reference%' d='Shop.Theme.Checkout' sprintf=['%reference%' => $order.details.reference]}</li>
               <li>{l s='Payment method: %method%' d='Shop.Theme.Checkout' sprintf=['%method%' => $order.details.payment]}</li>
-              {if !$order.details.is_virtual}
+              {if !$order.details.is_virtual && !($is_multishipment_enabled|default:false)}
                 <li>
                   {l s='Shipping method: %method%' d='Shop.Theme.Checkout' sprintf=['%method%' => $order.carrier.name]}<br>
                   <em>{$order.carrier.delay}</em>
@@ -83,7 +83,6 @@
             </ul>
           </div>
         {/block}
-
       </div>
     </div>
   </section>
