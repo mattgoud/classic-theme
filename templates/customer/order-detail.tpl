@@ -53,9 +53,6 @@
 
       <div class="box">
           <ul>
-            {if $order.carrier.name}
-              <li><strong>{l s='Carrier' d='Shop.Theme.Checkout'}</strong> {$order.carrier.name}</li>
-            {/if}
             <li><strong>{l s='Payment method' d='Shop.Theme.Checkout'}</strong> {$order.details.payment}</li>
 
             {if $order.details.invoice_url}
@@ -151,9 +148,17 @@
 
   {block name='order_detail'}
     {if $order.details.is_returnable && !$orderIsVirtual}
-      {include file='customer/_partials/order-detail-return.tpl'}
+      {if $is_multishipment_enabled}
+        {include file='customer/_partials/order-detail-return-multishipment.tpl'}
+      {else}
+        {include file='customer/_partials/order-detail-return.tpl'}
+      {/if}
     {else}
-      {include file='customer/_partials/order-detail-no-return.tpl'}
+      {if $is_multishipment_enabled}
+        {include file='customer/_partials/order-detail-no-return-multishipment.tpl'}
+      {else}
+        {include file='customer/_partials/order-detail-no-return.tpl'}
+      {/if}
     {/if}
   {/block}
 
