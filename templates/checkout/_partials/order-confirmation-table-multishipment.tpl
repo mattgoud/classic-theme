@@ -33,10 +33,9 @@
   </div>
 
   <div class="order-confirmation-table">
-
     {block name='order_confirmation_table'}
-      {foreach from=$products item=productCarrier}
-        {foreach from=$productCarrier['products'] item=productDetail}
+      {foreach from=$products['physical_products'] item=product}
+        {foreach from=$product['products'] item=productDetail}
           <div class="order-line row">
             <div class="col-sm-2 col-xs-3">
               <span class="image">
@@ -59,8 +58,8 @@
               {if $add_product_link}<a href="{$productDetail.url}" target="_blank">{/if}
                 <span>{$productDetail.name}</span>
               {if $add_product_link}</a>{/if}
-              {if {$productCarrier['carrier'].name}}
-                <div class="carrier-name">{l s='Carrier: ' d='Shop.Theme.Checkout'} {$productCarrier['carrier'].name}</div>
+              {if isset($product['carrier']) && $product['carrier'].name}
+                <div class="carrier-name">{l s='Carrier: ' d='Shop.Theme.Checkout'} {$product['carrier'].name}</div>
               {/if}
               {if is_array($productDetail.customizations) && $productDetail.customizations|count}
                 {foreach from=$productDetail.customizations item="customization"}
@@ -114,6 +113,85 @@
         {/foreach}
       {/foreach}
 
+      {if isset($products['virtual_products']) && !empty($products['virtual_products'])}
+        {foreach from=$products['virtual_products'] item=productDetail}
+          <div class="order-line row">
+            <div class="col-sm-2 col-xs-3">
+              <span class="image">
+                {if !empty($productDetail.default_image)}
+                  <picture>
+                    {if !empty($productDetail.default_image.medium.sources.avif)}<source srcset="{$productDetail.default_image.medium.sources.avif}" type="image/avif">{/if}
+                    {if !empty($productDetail.default_image.medium.sources.webp)}<source srcset="{$productDetail.default_image.medium.sources.webp}" type="image/webp">{/if}
+                    <img src="{$productDetail.default_image.medium.url}" loading="lazy" />
+                  </picture>
+                {else}
+                  <picture>
+                    {if !empty($urls.no_picture_image.bySize.medium_default.sources.avif)}<source srcset="{$urls.no_picture_image.bySize.medium_default.sources.avif}" type="image/avif">{/if}
+                    {if !empty($urls.no_picture_image.bySize.medium_default.sources.webp)}<source srcset="{$urls.no_picture_image.bySize.medium_default.sources.webp}" type="image/webp">{/if}
+                    <img src="{$urls.no_picture_image.bySize.medium_default.url}" loading="lazy" />
+                  </picture>
+                {/if}
+              </span>
+            </div>
+            <div class="col-sm-4 col-xs-9 details">
+              {if $add_product_link}<a href="{$productDetail.url}" target="_blank">{/if}
+                <span>{$productDetail.name}</span>
+              {if $add_product_link}</a>{/if}
+
+              <div class="virtual-info">{l s='Virtual product, no delivery service.' d='Shop.Theme.Global'}</div>
+
+              {if is_array($productDetail.customizations) && $productDetail.customizations|count}
+                {foreach from=$productDetail.customizations item="customization"}
+                  <div class="customizations">
+                    <a href="#" data-toggle="modal" data-target="#product-customizations-modal-{$customization.id_customization}">{l s='Product customization' d='Shop.Theme.Catalog'}</a>
+                  </div>
+                  <div class="modal fade customization-modal" id="product-customizations-modal-{$customization.id_customization}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="{l s='Close' d='Shop.Theme.Global'}">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                          <h4 class="modal-title">{l s='Product customization' d='Shop.Theme.Catalog'}</h4>
+                        </div>
+                        <div class="modal-body">
+                          {foreach from=$customization.fields item="field"}
+                            <div class="product-customization-line row">
+                              <div class="col-sm-3 col-xs-4 label">
+                                {$field.label}
+                              </div>
+                              <div class="col-sm-9 col-xs-8 value">
+                                {if $field.type == 'text'}
+                                  {if (int)$field.id_module}
+                                    {$field.text nofilter}
+                                  {else}
+                                    {$field.text}
+                                  {/if}
+                                {elseif $field.type == 'image'}
+                                  <img src="{$field.image.small.url}" loading="lazy">
+                                {/if}
+                              </div>
+                            </div>
+                          {/foreach}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {/foreach}
+              {/if}
+              {hook h='displayProductPriceBlock' product=$productDetail type="unit_price"}
+            </div>
+            <div class="col-sm-6 col-xs-12 qty">
+              <div class="row">
+                <div class="col-xs-4 text-sm-center text-xs-left">{$productDetail.price}</div>
+                <div class="col-xs-4 text-sm-center">{$productDetail.quantity}</div>
+                <div class="col-xs-4 text-sm-center text-xs-right bold">{$productDetail.total}</div>
+              </div>
+            </div>
+          </div>
+        {/foreach}
+      {/if}
+
       <hr>
 
       <table>
@@ -148,6 +226,5 @@
         {/if}
       </table>
     {/block}
-
   </div>
 </div>
