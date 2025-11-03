@@ -148,13 +148,13 @@
 
   {block name='order_detail'}
     {if $order.details.is_returnable && !$orderIsVirtual}
-      {if $is_multishipment_enabled}
+      {if $is_multishipment_enabled|default:false}
         {include file='customer/_partials/order-detail-return-multishipment.tpl'}
       {else}
         {include file='customer/_partials/order-detail-return.tpl'}
       {/if}
     {else}
-      {if $is_multishipment_enabled}
+      {if $is_multishipment_enabled|default:false}
         {include file='customer/_partials/order-detail-no-return-multishipment.tpl'}
       {else}
         {include file='customer/_partials/order-detail-no-return.tpl'}
