@@ -33,13 +33,13 @@
           <th>{l s='Total price' d='Shop.Theme.Catalog'}</th>
         </tr>
       </thead>
-      {foreach $order->order_shipments['virtual_products'] item=product}
-        {include file='./order-detail-product-line-no-return.tpl' product=$product}
-      {/foreach}
       {foreach $order->order_shipments['physical_products'] item=shipment}
         {foreach from=$shipment['products'] item=product}
           {include file='./order-detail-product-line-no-return.tpl' product=$product carrier_name=$shipment['carrier']['name']}
         {/foreach}
+      {/foreach}
+      {foreach $order->order_shipments['virtual_products'] item=product}
+        {include file='./order-detail-product-line-no-return.tpl' product=$product}
       {/foreach}
       <tfoot>
         {foreach $order.subtotals as $line}
@@ -59,42 +59,13 @@
   </div>
 
   <div class="order-items hidden-md-up box">
-    {foreach from=$order.products item=product}
-      <div class="order-item">
-        <div class="row">
-          <div class="col-sm-5 desc">
-            <div class="name">{$product.name}</div>
-            {if $product.product_reference}
-              <div class="ref">{l s='Reference' d='Shop.Theme.Catalog'}: {$product.product_reference}</div>
-            {/if}
-            {if isset($product.download_link)}
-              <a href="{$product.download_link}">{l s='Download' d='Shop.Theme.Actions'}</a><br/>
-            {/if}
-            {if $product.customizations}
-              {foreach $product.customizations as $customization}
-                <div class="customization">
-                  <a href="#" data-toggle="modal" data-target="#product-customizations-modal-{$customization.id_customization}">{l s='Product customization' d='Shop.Theme.Catalog'}</a>
-                </div>
-                <div id="_mobile_product_customization_modal_wrapper_{$customization.id_customization}">
-                </div>
-              {/foreach}
-            {/if}
-          </div>
-          <div class="col-sm-7 qty">
-            <div class="row">
-              <div class="col-xs-4 text-sm-left text-xs-left">
-                {$product.price}
-              </div>
-              <div class="col-xs-4">
-                {$product.quantity}
-              </div>
-              <div class="col-xs-4 text-xs-right">
-                {$product.total}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    {foreach $order->order_shipments['physical_products'] item=shipment}
+      {foreach from=$shipment['products'] item=product}
+        {include file='./order-detail-product-line-no-return-mobile.tpl' product=$product carrier_name=$shipment['carrier']['name']}
+      {/foreach}
+    {/foreach}
+    {foreach $order->order_shipments['virtual_products'] item=product}
+      {include file='./order-detail-product-line-no-return-mobile.tpl' product=$product}
     {/foreach}
   </div>
   <div class="order-totals hidden-md-up box">
