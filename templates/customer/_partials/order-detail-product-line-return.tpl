@@ -75,7 +75,7 @@
             {/section}
           </select>
         </div>
-        {/if}
+      {/if}
     </td>
     <td class="text-xs-right">{if !$product.is_virtual}{$product.qty_returned}{/if}</td>
     <td class="text-xs-right">{$product.price}</td>
