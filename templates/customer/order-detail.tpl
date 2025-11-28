@@ -169,7 +169,7 @@
 
   {block name='order_carriers'}
     {if $order.shipping}
-      {if $is_multishipment_enabled}
+      {if $is_multishipment_enabled|default:false}
         {include file='customer/_partials/order-shipments.tpl'}
       {else}
         {include file='customer/_partials/order-carrier.tpl'}
