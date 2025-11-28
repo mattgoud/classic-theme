@@ -5,7 +5,7 @@
         {if !$product.customizations}
           <span id="_mobile_product_line_{$product.id_order_detail}"></span>
         {else}
-          {foreach $product.customizations  as $customization}
+          {foreach $product.customizations as $customization}
             <span id="_mobile_product_line_{$product.id_order_detail}"></span>
           {/foreach}
         {/if}
