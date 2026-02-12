@@ -52,7 +52,7 @@
             <div class="col-md-6">
               <select name="id_contact" id="id_contact" class="form-control form-control-select">
                 {foreach from=$contact.contacts item=contact_elt}
-                  <option value="{$contact_elt.id_contact}">{$contact_elt.name}</option>
+                  <option value="{$contact_elt.id_contact|escape:'htmlall':'UTF-8'}">{$contact_elt.name|escape:'htmlall':'UTF-8'}</option>
                 {/foreach}
               </select>
             </div>
