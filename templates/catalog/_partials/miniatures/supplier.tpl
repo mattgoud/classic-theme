@@ -25,18 +25,20 @@
 {block name='supplier_miniature_item'}
   <li class="supplier">
     <div class="supplier-img">
-      <a href="{$supplier.url}">
-        <picture>
-          {if !empty($supplier.image.bySize.small_default.sources.avif)}<source srcset="{$supplier.image.bySize.small_default.sources.avif}" type="image/avif">{/if}
-          {if !empty($supplier.image.bySize.small_default.sources.webp)}<source srcset="{$supplier.image.bySize.small_default.sources.webp}" type="image/webp">{/if}
-          <img
-            src="{$supplier.image.bySize.small_default.url}"
-            alt="{if !empty($supplier.image.legend)}{$supplier.image.legend}{else}{$supplier.name}{/if}"
-            class="img-fluid"
-            loading="lazy"
-          >
-        </picture>
-      </a>
+      {if !empty($supplier.image.bySize.small_default.url)}
+        <a href="{$supplier.url}">
+          <picture>
+            {if !empty($supplier.image.bySize.small_default.sources.avif)}<source srcset="{$supplier.image.bySize.small_default.sources.avif}" type="image/avif">{/if}
+            {if !empty($supplier.image.bySize.small_default.sources.webp)}<source srcset="{$supplier.image.bySize.small_default.sources.webp}" type="image/webp">{/if}
+            <img
+              src="{$supplier.image.bySize.small_default.url}"
+              alt="{if !empty($supplier.image.legend)}{$supplier.image.legend}{else}{$supplier.name}{/if}"
+              class="img-fluid"
+              loading="lazy"
+            >
+          </picture>
+        </a>
+      {/if}
     </div>
     <div class="supplier-infos">
       <p><a href="{$supplier.url}">{$supplier.name}</a></p>
